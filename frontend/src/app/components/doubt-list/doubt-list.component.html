@@ -1,0 +1,73 @@
+<div class="doubt-list-container">
+  <h2>All Doubts</h2>
+  
+  <!-- Filters -->
+  <div class="filters">
+    <input 
+      type="text" 
+      [(ngModel)]="searchQuery" 
+      (input)="onSearch()" 
+      placeholder="Search doubts..."
+      class="search-input">
+    
+    <select [(ngModel)]="selectedSubject" (change)="onFilterChange()" class="filter-select">
+      <option value="">All Subjects</option>
+      <option *ngFor="let subject of subjects" [value]="subject.subject_id">
+        {{ subject.subject_name }}
+      </option>
+    </select>
+    
+    <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="filter-select">
+      <option value="">All Status</option>
+      <option value="open">Open</option>
+      <option value="answered">Answered</option>
+      <option value="resolved">Resolved</option>
+    </select>
+  </div>
+
+  <!-- Doubt List -->
+  <div class="doubts-grid" *ngIf="doubts.length > 0">
+    <div class="doubt-card" *ngFor="let doubt of doubts" (click)="viewDoubt(doubt.doubt_id)">
+      <div class="doubt-header">
+        <h3>{{ doubt.title }}</h3>
+        <span class="status-badge" [class]="'status-' + doubt.status">
+          {{ doubt.status }}
+        </span>
+      </div>
+      
+      <p class="doubt-description">{{ doubt.description | slice:0:150 }}...</p>
+      
+      <div class="doubt-meta">
+        <span class="subject-tag">{{ doubt.subject_name }}</span>
+        <span class="tags">
+          <span class="tag" *ngFor="let tag of doubt.tags">{{ tag }}</span>
+        </span>
+      </div>
+      
+      <div class="doubt-footer">
+        <span class="author">By {{ doubt.student_name }}</span>
+        <span class="stats">
+          <i class="icon-answer"></i> {{ doubt.answer_count }} answers
+          <i class="icon-view"></i> {{ doubt.view_count }} views
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="doubts.length === 0 && !loading">
+    <p>No doubts found. Try adjusting your filters.</p>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <p>Loading doubts...</p>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>

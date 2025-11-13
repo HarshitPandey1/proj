@@ -1,0 +1,109 @@
+<div class="doubt-detail-container" *ngIf="doubt">
+  <!-- Doubt Section -->
+  <div class="doubt-section">
+    <div class="doubt-header">
+      <h1>{{ doubt.title }}</h1>
+      <span class="status-badge" [class]="'status-' + doubt.status">
+        {{ doubt.status }}
+      </span>
+    </div>
+
+    <div class="doubt-meta">
+      <span class="author">Asked by {{ doubt.student_name }}</span>
+      <span class="date">{{ doubt.created_at | date:'medium' }}</span>
+      <span class="subject">{{ doubt.subject_name }}</span>
+    </div>
+
+    <div class="tags">
+      <span class="tag" *ngFor="let tag of doubt.tags">{{ tag }}</span>
+    </div>
+
+    <div class="doubt-content">
+      <p>{{ doubt.description }}</p>
+      <img *ngIf="doubt.image_url" [src]="doubt.image_url" alt="Doubt image" class="doubt-image">
+    </div>
+
+    <div class="doubt-stats">
+      <span><i class="icon-view"></i> {{ doubt.view_count }} views</span>
+      <span><i class="icon-answer"></i> {{ answers.length }} answers</span>
+    </div>
+
+    <!-- Edit/Delete buttons for owner -->
+    <div class="actions" *ngIf="isOwner">
+      <button class="btn-edit" (click)="editDoubt()">Edit</button>
+      <button class="btn-delete" (click)="deleteDoubt()">Delete</button>
+    </div>
+  </div>
+
+  <!-- Answers Section -->
+  <div class="answers-section">
+    <h2>{{ answers.length }} Answers</h2>
+
+    <!-- Answer Form -->
+    <div class="answer-form" *ngIf="currentUser">
+      <h3>Your Answer</h3>
+      <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
+        <textarea 
+          formControlName="content"
+          placeholder="Write your answer here..."
+          rows="6"
+          class="answer-textarea"></textarea>
+        
+        <div class="form-actions">
+          <button type="submit" [disabled]="answerForm.invalid || submitting" class="btn-submit">
+            {{ submitting ? 'Posting...' : 'Post Answer' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Answers List -->
+    <div class="answers-list">
+      <div class="answer-card" *ngFor="let answer of answers" 
+           [class.accepted]="answer.is_accepted">
+        
+        <div class="answer-header">
+          <span class="author">{{ answer.user_name }}</span>
+          <span class="date">{{ answer.created_at | date:'short' }}</span>
+          <span class="accepted-badge" *ngIf="answer.is_accepted">✓ Accepted</span>
+        </div>
+
+        <div class="answer-content">
+          <p>{{ answer.content }}</p>
+        </div>
+
+        <div class="answer-footer">
+          <div class="voting">
+            <button (click)="upvoteAnswer(answer.answer_id)" class="vote-btn">
+              ↑ {{ answer.upvotes }}
+            </button>
+            <button (click)="downvoteAnswer(answer.answer_id)" class="vote-btn">
+              ↓ {{ answer.downvotes }}
+            </button>
+          </div>
+
+          <!-- Accept button for doubt owner -->
+          <button 
+            *ngIf="isOwner && !answer.is_accepted && doubt.status !== 'resolved'"
+            (click)="acceptAnswer(answer.answer_id)"
+            class="btn-accept">
+            Accept Answer
+          </button>
+        </div>
+      </div>
+
+      <div class="no-answers" *ngIf="answers.length === 0">
+        <p>No answers yet. Be the first to answer!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="!doubt && loading">
+  <p>Loading doubt...</p>
+</div>
+
+<div class="error" *ngIf="!doubt && !loading">
+  <p>Doubt not found.</p>
+  <button (click)="goBack()">Go Back</button>
+</div>

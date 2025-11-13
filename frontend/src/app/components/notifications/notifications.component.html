@@ -1,0 +1,49 @@
+<div class="notifications-container">
+  <div class="notifications-header">
+    <h2>Notifications</h2>
+    <button *ngIf="unreadCount > 0" (click)="markAllAsRead()" class="btn-mark-all">
+      Mark all as read
+    </button>
+  </div>
+
+  <!-- Notifications List -->
+  <div class="notifications-list" *ngIf="notifications.length > 0">
+    <div 
+      class="notification-item" 
+      *ngFor="let notification of notifications"
+      [class.unread]="!notification.is_read"
+      (click)="handleNotificationClick(notification)">
+      
+      <div class="notification-icon">
+        <span [class]="getIconClass(notification.type)">{{ getIcon(notification.type) }}</span>
+      </div>
+
+      <div class="notification-content">
+        <p class="notification-message">{{ notification.message }}</p>
+        <span class="notification-time">{{ notification.created_at | date:'short' }}</span>
+      </div>
+
+      <div class="notification-actions">
+        <button 
+          *ngIf="!notification.is_read"
+          (click)="markAsRead(notification.id); $event.stopPropagation()"
+          class="btn-mark-read"
+          title="Mark as read">
+          ✓
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="notifications.length === 0 && !loading">
+    <div class="empty-icon">🔔</div>
+    <p>No notifications yet</p>
+    <small>You'll be notified when someone answers your doubts or comments on your answers</small>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <p>Loading notifications...</p>
+  </div>
+</div>

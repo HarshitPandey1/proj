@@ -1,0 +1,50 @@
+<div class="app-container">
+  <!-- Header/Navbar -->
+  <header class="header" *ngIf="currentUser">
+    <nav class="navbar container">
+      <div class="navbar-brand">
+        <a routerLink="/" class="logo">
+          <h2>🎓 BMS Doubt Solver</h2>
+        </a>
+      </div>
+      
+      <div class="navbar-menu">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+          Home
+        </a>
+        <a routerLink="/doubts" routerLinkActive="active" class="nav-link">
+          All Doubts
+        </a>
+        <a routerLink="/doubts/new" routerLinkActive="active" class="nav-link">
+          Post Doubt
+        </a>
+        <a routerLink="/my-doubts" routerLinkActive="active" class="nav-link">
+          My Doubts
+        </a>
+        <a routerLink="/notifications" routerLinkActive="active" class="nav-link">
+          Notifications
+        </a>
+        <a *ngIf="currentUser?.role === 'admin'" routerLink="/admin" routerLinkActive="active" class="nav-link">
+          Admin
+        </a>
+      </div>
+      
+      <div class="navbar-user">
+        <span class="user-info">{{ currentUser?.fullName }}</span>
+        <button (click)="logout()" class="btn btn-sm btn-secondary">Logout</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" *ngIf="currentUser">
+    <div class="container text-center">
+      <p>&copy; 2025 BMS College Doubt Solver. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

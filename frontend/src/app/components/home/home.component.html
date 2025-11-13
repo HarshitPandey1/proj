@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="hero-section">
+    <h1>Welcome to BMS College Doubt Solver</h1>
+    <p class="hero-subtitle">Ask questions, share knowledge, and help your peers succeed</p>
+    <div class="hero-actions">
+      <button routerLink="/doubts/new" class="btn btn-primary btn-lg">Post a Doubt</button>
+      <button routerLink="/doubts" class="btn btn-secondary btn-lg">Browse Doubts</button>
+    </div>
+  </div>
+
+  <div class="recent-doubts-section">
+    <h2>Recent Doubts</h2>
+    
+    <div *ngIf="loading" class="spinner"></div>
+
+    <div *ngIf="!loading && recentDoubts.length === 0" class="text-center">
+      <p>No doubts posted yet. Be the first to ask a question!</p>
+    </div>
+
+    <div class="doubts-grid">
+      <div *ngFor="let doubt of recentDoubts" class="doubt-card card" (click)="viewDoubt(doubt.doubt_id)">
+        <div class="card-header">
+          <h3>{{ doubt.title }}</h3>
+          <span class="badge badge-success" *ngIf="doubt.is_resolved">Resolved</span>
+        </div>
+        <div class="card-body">
+          <p>{{ doubt.description.substring(0, 150) }}{{ doubt.description.length > 150 ? '...' : '' }}</p>
+          <div class="doubt-meta">
+            <span><strong>Posted by:</strong> {{ doubt.author_name }}</span>
+            <span *ngIf="doubt.subject_name"><strong>Subject:</strong> {{ doubt.subject_name }}</span>
+            <span><strong>Answers:</strong> {{ doubt.answer_count || 0 }}</span>
+          </div>
+          <div class="doubt-tags" *ngIf="doubt.tags && doubt.tags.length > 0">
+            <span class="badge badge-primary" *ngFor="let tag of doubt.tags">{{ tag }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
