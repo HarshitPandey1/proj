@@ -1,0 +1,30 @@
+{
+  "name": "college-doubt-solver",
+  "version": "1.0.0",
+  "description": "College-specific doubt-solving platform for students and faculty",
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "start:backend": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && ng serve",
+    "build:frontend": "cd frontend && ng build",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run start:frontend\"",
+    "setup:db": "psql -U postgres -d college_doubt_solver -f backend/database/schema.sql"
+  },
+  "keywords": [
+    "doubt-solver",
+    "education",
+    "college",
+    "mean-stack",
+    "angular",
+    "nodejs",
+    "postgresql"
+  ],
+  "author": "BMS College",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
