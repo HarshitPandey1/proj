@@ -412,25 +412,5 @@ INSERT INTO subjects (subject_name, subject_code, department, description)
 VALUES ('Your Subject', 'SUB101', 'Department', 'Description');
 ```
 
-### Customize Styling
-Edit `frontend/src/styles.css` for global styles or component-specific CSS files.
 
-## 📄 License
 
-MIT License - Feel free to use this project for educational purposes.
-
-## 👥 Contributors
-
-Developed as a college project for BMS College of Engineering.
-
-## 📞 Support
-
-For issues or questions:
-1. Check the troubleshooting section
-2. Review API documentation
-3. Check browser console for frontend errors
-4. Check backend logs for server errors
-
----
-
-**Happy Learning! 🎓**
